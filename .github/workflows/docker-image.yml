@@ -18,6 +18,10 @@ jobs:
     steps:
     - name: Checkout repository
       uses: actions/checkout@v3
+    - name: 'Login via Azure CLI'
+      uses: azure/login@v1
+      with:
+        creds: ${{ secrets.AZURE_CREDENTIALS }}
     - name: Log into registry
       uses: docker/login-action@v1
       with:
