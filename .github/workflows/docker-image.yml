@@ -1,0 +1,31 @@
+name: Docker Image CI
+
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+env:
+  IMAGE_NAME: demowebapp
+  
+jobs:
+
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout Repository
+    - uses: actions/checkout@v3
+    - name: Login into Azure Container Registry
+      uses: docker/login-action@v1
+      with:
+        registry: demoazurecr01.azurecr.io
+        username: demoazurecr01
+        password: Pna6OH/brOyu16hydRb8hobtvlHLYH0pB25PFqwasT+ACRDyDIlB
+    - name: Build the Docker image
+      uses: docker/build-push-action@v2
+      with:
+        push: true
+        tags: demoazurecr01.azurecr.io/${{ env.IMAGE_NAME }}:${{ github.sha }}
+        file: DemoWebAppSqlLite/Dockerfile
